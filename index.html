@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>우리반 학습 활동 관찰 기록소</title>
+<style>
+:root {
+  --green:#3d7a4e;--green-light:#eaf3ec;--green-mid:#b8ddc4;
+  --accent:#f59e0b;--accent-light:#fef3c7;
+  --blue:#3b82f6;--blue-light:#dbeafe;
+  --purple:#7c3aed;--purple-light:#ede9fe;
+  --red:#ef4444;--red-light:#fee2e2;
+  --teal:#0d9488;--teal-light:#ccfbf1;
+  --gray:#6b7280;--gray-light:#f3f4f6;
+  --border:#e5e7eb;--text:#1f2937;--text-sub:#6b7280;
+  --radius:10px;--shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f0f4f1;color:var(--text);font-size:15px;}
+.app-header{background:var(--green);color:white;padding:16px 20px 12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+.app-header h1{font-size:17px;font-weight:bold;}
+.app-header p{font-size:11px;opacity:.75;margin-top:2px;}
+.nav{display:flex;background:white;border-bottom:2px solid var(--border);position:sticky;top:62px;z-index:99;}
+.nav-btn{flex:1;padding:13px 4px 11px;border:none;background:none;cursor:pointer;font-size:12px;color:var(--gray);display:flex;flex-direction:column;align-items:center;gap:3px;border-bottom:3px solid transparent;transition:all .2s;font-family:inherit;}
+.nav-btn .icon{font-size:20px;}
+.nav-btn.active{color:var(--green);border-bottom-color:var(--green);font-weight:bold;}
+.nav-btn:hover{background:var(--green-light);}
+.panel{display:none;padding:16px;max-width:680px;margin:0 auto;padding-bottom:60px;}
+.panel.active{display:block;}
+.card{background:white;border-radius:var(--radius);padding:18px;margin-bottom:14px;box-shadow:var(--shadow);}
+.card-header{font-size:14px;font-weight:bold;color:var(--green);margin-bottom:14px;padding-bottom:10px;border-bottom:1.5px solid var(--green-light);display:flex;align-items:center;gap:6px;}
+.field{margin-bottom:14px;}
+.field:last-child{margin-bottom:0;}
+.field label{display:block;font-size:13px;font-weight:bold;color:var(--text);margin-bottom:6px;}
+.field label .sub{font-weight:normal;color:var(--gray);font-size:11px;margin-left:4px;}
+input[type=text],input[type=date],select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;background:white;color:var(--text);transition:border .2s;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);background:#fafffe;}
+textarea{resize:vertical;min-height:80px;line-height:1.6;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:480px){.row2{grid-template-columns:1fr;}}
+.pills{display:flex;flex-wrap:wrap;gap:7px;}
+.pill{padding:8px 14px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;font-size:13px;font-family:inherit;color:var(--gray);transition:all .15s;user-select:none;}
+.pill.on{background:var(--green);border-color:var(--green);color:white;font-weight:bold;}
+.pill.blue.on{background:var(--blue);border-color:var(--blue);}
+.pill.purple.on{background:var(--purple);border-color:var(--purple);}
+.pill.amber.on{background:var(--accent);border-color:var(--accent);color:#78350f;}
+.pill.teal.on{background:var(--teal);border-color:var(--teal);color:white;}
+.btn{padding:12px 20px;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-family:inherit;font-weight:bold;transition:all .15s;display:inline-flex;align-items:center;gap:6px;}
+.btn-primary{background:var(--green);color:white;}
+.btn-primary:hover{background:#2e5e3b;}
+.btn-secondary{background:var(--gray-light);color:var(--text);}
+.btn-secondary:hover{background:#e5e7eb;}
+.btn-danger{background:var(--red-light);color:var(--red);}
+.btn-danger:hover{background:#fca5a5;}
+.btn-ai{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;}
+.btn-ai:hover{background:linear-gradient(135deg,#4f46e5,#7c3aed);}
+.btn-sm{padding:7px 12px;font-size:12px;border-radius:6px;}
+.btn-full{width:100%;justify-content:center;padding:14px;font-size:15px;}
+.student-row{display:flex;align-items:flex-start;gap:12px;padding:14px;border:1.5px solid var(--border);border-radius:8px;margin-bottom:10px;}
+.student-avatar{width:42px;height:42px;border-radius:50%;background:var(--green);color:white;font-size:16px;font-weight:bold;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.student-info{flex:1;min-width:0;}
+.student-name{font-weight:bold;font-size:15px;margin-bottom:4px;}
+.iep-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
+.chip{padding:3px 9px;border-radius:12px;font-size:11px;background:var(--green-light);color:var(--green);font-weight:bold;}
+/* Record cards */
+.rec-card{border-left:4px solid var(--green);padding:14px;margin-bottom:12px;background:var(--green-light);border-radius:0 8px 8px 0;}
+.rec-top{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+.tag{padding:3px 9px;border-radius:10px;font-size:12px;font-weight:bold;}
+.tag-date{background:var(--green);color:white;}
+.tag-subj{background:var(--blue-light);color:var(--blue);}
+.tag-subj-iad{background:var(--teal-light);color:var(--teal);}
+.tag-area{background:var(--purple-light);color:var(--purple);}
+.tag-sup{background:var(--accent-light);color:#92400e;}
+.tag-eval{background:#f0fdf4;color:#15803d;border:1px solid #86efac;}
+.rec-obs{font-size:14px;line-height:1.7;color:var(--text);margin-bottom:8px;padding:10px;background:white;border-radius:6px;}
+.rec-detail{font-size:12px;margin-top:4px;padding:4px 0;}
+.rec-iep{font-size:12px;color:var(--purple);margin-top:6px;}
+.rec-memo{font-size:12px;color:var(--gray);margin-top:4px;font-style:italic;}
+/* IEP */
+.iep-goal-block{border:1.5px solid var(--border);border-radius:8px;margin-bottom:14px;overflow:hidden;}
+.iep-goal-title{background:var(--green);color:white;padding:10px 14px;font-size:13px;font-weight:bold;display:flex;justify-content:space-between;align-items:center;}
+.iep-goal-body{padding:12px 14px;}
+.iep-rec-item{padding:8px 0;border-bottom:1px dashed var(--border);font-size:13px;}
+.iep-rec-item:last-child{border-bottom:none;}
+.copy-box{background:#f8fafc;border:1.5px dashed var(--border);border-radius:8px;padding:14px;font-size:13px;line-height:1.8;white-space:pre-wrap;font-family:'Malgun Gothic',monospace;color:var(--text);}
+.alert{background:#fffbeb;border:1.5px solid var(--accent);border-radius:8px;padding:12px 14px;font-size:13px;color:#92400e;margin-bottom:14px;display:flex;gap:8px;align-items:flex-start;}
+.empty{text-align:center;padding:40px 20px;color:var(--gray);}
+.empty .big{font-size:36px;margin-bottom:10px;}
+.empty p{font-size:14px;}
+.filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.filter-bar select,.filter-bar input{flex:1;min-width:130px;padding:9px 11px;font-size:13px;}
+.badge{background:var(--red);color:white;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:bold;}
+.iep-entry{display:grid;grid-template-columns:1fr 1fr 2fr auto;gap:6px;margin-bottom:6px;align-items:center;}
+@media(max-width:540px){.iep-entry{grid-template-columns:1fr 1fr;}}
+.iep-entry input{font-size:12px;padding:7px 9px;}
+.subj-group-label{font-size:11px;font-weight:bold;color:var(--gray);margin:8px 0 4px;width:100%;}
+.custom-subj-row{display:flex;gap:6px;align-items:center;margin-top:6px;}
+.custom-subj-row input{flex:1;font-size:13px;padding:7px 10px;}
+.selected-subj-display{font-size:13px;font-weight:bold;color:var(--green);margin-top:6px;min-height:22px;}
+/* 파일 업로드 */
+.file-upload-area{border:2px dashed var(--border);border-radius:8px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;background:#fafafa;}
+.file-upload-area:hover{border-color:var(--green);background:var(--green-light);}
+.file-upload-area input{display:none;}
+.file-upload-label{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;}
+.file-upload-label .icon{font-size:28px;}
+.file-upload-label span{font-size:13px;color:var(--gray);}
+.file-upload-label strong{font-size:12px;color:var(--green);}
+.file-preview-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.file-preview-item{position:relative;width:80px;}
+.file-preview-item img{width:80px;height:80px;object-fit:cover;border-radius:6px;border:1.5px solid var(--border);}
+.file-preview-item .pdf-thumb{width:80px;height:80px;border-radius:6px;border:1.5px solid var(--border);background:#f1f5f9;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;color:var(--gray);gap:3px;}
+.file-preview-item .pdf-thumb span{font-size:22px;}
+.file-preview-item .del-btn{position:absolute;top:-5px;right:-5px;background:var(--red);color:white;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+/* AI 분석 박스 */
+.ai-box{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:1.5px solid #c4b5fd;border-radius:8px;padding:14px;margin-top:8px;}
+.ai-box-header{font-size:12px;font-weight:bold;color:var(--purple);margin-bottom:6px;display:flex;align-items:center;gap:4px;}
+.ai-spinner{display:inline-block;width:12px;height:12px;border:2px solid #c4b5fd;border-top-color:var(--purple);border-radius:50%;animation:spin .6s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+<div class="app-header">
+  <h1>📋 우리반 학습 활동 관찰 기록소</h1>
+  <p>수업 중 관찰 → IEP 평가 자료 연결 · 실명 없는 안전한 기록</p>
+</div>
+<nav class="nav">
+  <button class="nav-btn active" onclick="goTab('students',this)"><span class="icon">👤</span>학생 관리</button>
+  <button class="nav-btn" onclick="goTab('record',this)"><span class="icon">✏️</span>수업 기록</button>
+  <button class="nav-btn" onclick="goTab('view',this)"><span class="icon">📂</span>기록 보기</button>
+  <button class="nav-btn" onclick="goTab('iep',this)"><span class="icon">📊</span>IEP 평가</button>
+</nav>
+
+<!-- ===== TAB1: 학생 관리 ===== -->
+<div id="tab-students" class="panel active">
+  <div class="alert">⚠️ <div>실명을 입력하지 마세요. <b>학생 A, 학생 B</b> 등 가명만 사용해 주세요.</div></div>
+  <div class="card">
+    <div class="card-header">➕ 새 학생 등록</div>
+    <div class="field">
+      <label>가명 <span class="sub">예: 학생 A, 학생 1</span></label>
+      <input type="text" id="sn-name" placeholder="학생 A">
+    </div>
+    <div class="field">
+      <label>현행수준 <span class="sub">교과별 현재 수행 수준을 입력하세요</span></label>
+      <div id="current-level-rows">
+        <div class="current-level-entry" style="display:grid;grid-template-columns:1fr 3fr auto;gap:6px;margin-bottom:6px;align-items:flex-start;">
+          <input type="text" placeholder="교과/영역" style="font-size:12px;padding:7px 9px;">
+          <textarea placeholder="현재 수행 수준 기술 (예: 그림 자료를 보고 1어절로 표현할 수 있으나, 2어절 이상의 문장 표현은 어려움)" style="font-size:12px;padding:7px 9px;min-height:60px;"></textarea>
+          <button class="btn btn-danger btn-sm" style="margin-top:2px;" onclick="removeCurrentLevelRow(this)">✕</button>
+        </div>
+      </div>
+      <button class="btn btn-secondary btn-sm" style="margin-top:6px;" onclick="addCurrentLevelRow()">＋ 현행수준 행 추가</button>
+    </div>
+    <div class="field">
+      <label>IEP 목표 입력 <span class="sub">교과 · 영역 · 목표 내용</span></label>
+      <div id="iep-rows">
+        <div class="iep-entry">
+          <input type="text" placeholder="교과"><input type="text" placeholder="영역">
+          <input type="text" placeholder="목표 내용">
+          <button class="btn btn-danger btn-sm" onclick="removeIepRow(this)">✕</button>
+        </div>
+      </div>
+      <button class="btn btn-secondary btn-sm" style="margin-top:6px;" onclick="addIepRow()">＋ 목표 행 추가</button>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="saveStudent()">💾 학생 저장</button>
+  </div>
+  <div class="card">
+    <div class="card-header">👥 등록된 학생</div>
+    <div id="student-list"></div>
+  </div>
+</div>
+
+<!-- ===== TAB2: 수업 기록 ===== -->
+<div id="tab-record" class="panel">
+  <div class="card">
+    <div class="card-header">📅 수업 기본 정보</div>
+    <div class="row2">
+      <div class="field"><label>날짜</label><input type="date" id="r-date"></div>
+      <div class="field"><label>학기</label>
+        <select id="r-semester"><option value="1학기">1학기</option><option value="2학기">2학기</option></select>
+      </div>
+    </div>
+    <div class="field">
+      <label>교과 / 영역</label>
+      <div class="subj-group-label">📘 기본교육과정 교과</div>
+      <div class="pills" id="subj-pills-basic">
+        <button class="pill blue" onclick="selectSubj(this,'국어')">국어</button>
+        <button class="pill blue" onclick="selectSubj(this,'수학')">수학</button>
+        <button class="pill blue" onclick="selectSubj(this,'과학')">과학</button>
+        <button class="pill blue" onclick="selectSubj(this,'사회')">사회</button>
+        <button class="pill blue" onclick="selectSubj(this,'음악')">음악</button>
+        <button class="pill blue" onclick="selectSubj(this,'미술')">미술</button>
+        <button class="pill blue" onclick="selectSubj(this,'진로와 직업')">진로와 직업</button>
+      </div>
+      <div class="subj-group-label">🏠 일상생활활동</div>
+      <div class="pills" id="subj-pills-iad">
+        <button class="pill teal" onclick="selectSubj(this,'[일상]의사소통')">[일상] 의사소통</button>
+        <button class="pill teal" onclick="selectSubj(this,'[일상]자립생활')">[일상] 자립생활</button>
+        <button class="pill teal" onclick="selectSubj(this,'[일상]신체활동')">[일상] 신체활동</button>
+        <button class="pill teal" onclick="selectSubj(this,'[일상]여가활동')">[일상] 여가활동</button>
+        <button class="pill teal" onclick="selectSubj(this,'[일상]생활적응')">[일상] 생활적응</button>
+      </div>
+      <div class="subj-group-label">🔖 선택교과</div>
+      <div class="pills" id="subj-pills-custom"></div>
+      <div class="custom-subj-row">
+        <input type="text" id="custom-subj-input" placeholder="선택교과명 입력 후 추가">
+        <button class="btn btn-secondary btn-sm" onclick="addCustomSubj()">＋ 추가</button>
+      </div>
+      <div class="selected-subj-display" id="selected-subj-display">선택된 교과: 없음</div>
+    </div>
+    <div class="field"><label>수업 내용 <span class="sub">활동명 또는 주제</span></label>
+      <input type="text" id="r-lesson" placeholder="예: 레몬 요거트 스무디 만들기">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">👤 관찰 대상 학생 <span class="sub" style="font-weight:normal;font-size:12px;">복수 선택 가능</span></div>
+    <div class="pills" id="student-pills"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">🔍 관찰 영역</div>
+    <div class="pills" id="area-pills"></div>
+    <div class="custom-subj-row" style="margin-top:10px;">
+      <input type="text" id="area-input" placeholder="영역 직접 추가 (예: 자기조절)" onkeydown="if(event.key==='Enter')addArea()">
+      <button class="btn btn-secondary btn-sm" onclick="addArea()">＋ 추가</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">📝 관찰 기록</div>
+    <div class="field">
+      <textarea id="r-obs" placeholder="예: 학생 A는 레몬 그림을 보고 '시다'라고 표현하였고, 교사의 선택지 제시 후 필요한 재료를 고를 수 있었다." style="min-height:100px;"></textarea>
+    </div>
+    <div class="field">
+      <label>지원 수준</label>
+      <div class="pills" id="support-pills">
+        <button class="pill amber" onclick="togglePillSingle(this,'support-pills')">독립 수행</button>
+        <button class="pill amber" onclick="togglePillSingle(this,'support-pills')">언어 촉진</button>
+        <button class="pill amber" onclick="togglePillSingle(this,'support-pills')">시각 촉진</button>
+        <button class="pill amber" onclick="togglePillSingle(this,'support-pills')">모델링</button>
+        <button class="pill amber" onclick="togglePillSingle(this,'support-pills')">신체적 도움</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">📌 IEP 목표 연결</div>
+    <div id="iep-link-area"><p style="color:var(--gray);font-size:13px;">위에서 학생을 선택하면 IEP 목표가 표시됩니다.</p></div>
+  </div>
+
+  <!-- AI 강점·지원 -->
+  <div class="card">
+    <div class="card-header">🤖 AI 강점 · 지원 필요 분석</div>
+    <p style="font-size:12px;color:var(--gray);margin-bottom:12px;">관찰 기록을 바탕으로 AI가 강점과 지원 필요 부분을 분석합니다. 빈칸이면 자동 생성, 내용이 있으면 다듬어 줍니다.</p>
+    <div class="field">
+      <label>학생의 강점 <span class="sub">직접 입력하거나 비워두세요</span></label>
+      <textarea id="r-strength" placeholder="예: 실물 자료 제시 시 집중력이 높고, 선택지가 주어지면 자발적으로 반응함" style="min-height:60px;"></textarea>
+    </div>
+    <div class="field">
+      <label>지원이 필요한 부분 <span class="sub">직접 입력하거나 비워두세요</span></label>
+      <textarea id="r-support-need" placeholder="예: 새로운 어휘 습득 시 반복 노출 필요" style="min-height:60px;"></textarea>
+    </div>
+    <button class="btn btn-ai btn-sm" id="ai-strength-btn" onclick="generateStrengthAi()" style="margin-bottom:8px;">✨ AI로 분석하기</button>
+    <div id="ai-strength-loading" style="display:none;font-size:13px;color:var(--purple);padding:6px 0;">
+      <span class="ai-spinner"></span> 분석 중...
+    </div>
+    <div id="ai-strength-result" style="display:none;"></div>
+  </div>
+
+  <!-- AI·디지털 도구 + 파일 -->
+  <div class="card">
+    <div class="card-header">🖥️ AI·디지털 도구 및 자료</div>
+    <div class="field">
+      <label>활용한 AI·디지털 도구</label>
+      <div class="pills" id="tool-pills" style="margin-bottom:8px;">
+        <button class="pill" onclick="togglePill(this)">나의 AAC</button>
+        <button class="pill" onclick="togglePill(this)">Canva</button>
+        <button class="pill" onclick="togglePill(this)">패들렛</button>
+        <button class="pill" onclick="togglePill(this)">북크리에이터</button>
+        <button class="pill" onclick="togglePill(this)">똑똑 수학탐험대</button>
+        <button class="pill" onclick="togglePill(this)">SUNO</button>
+        <button class="pill" onclick="togglePill(this)">Scroobly</button>
+      </div>
+      <input type="text" id="r-tool-custom" placeholder="직접 입력 (위에 없는 도구)">
+    </div>
+    <div class="field">
+      <label>도구 데이터 메모 <span class="sub">수치, 분석 결과 등 텍스트</span></label>
+      <textarea id="r-tool-data" placeholder="예: 클로바노트 발화 분석 - 평균 3어절, 총 12회 발화" style="min-height:60px;"></textarea>
+    </div>
+    <div class="field">
+      <label>파일 첨부 <span class="sub">도구 데이터 캡처 · 학생 산출물 (이미지, PDF)</span></label>
+      <div class="file-upload-area" onclick="document.getElementById('r-file-input').click()">
+        <label class="file-upload-label">
+          <span class="icon">📎</span>
+          <strong>클릭하여 파일 선택</strong>
+          <span>이미지 (jpg, png) · PDF · 최대 5개</span>
+        </label>
+        <input type="file" id="r-file-input" accept="image/jpeg,image/png,application/pdf" multiple onchange="handleFiles(this)">
+      </div>
+      <div class="file-preview-list" id="file-preview-list"></div>
+    </div>
+    <div class="field">
+      <label>학생 산출물 메모 <span class="sub">작품명, 링크, 파일명 등</span></label>
+      <textarea id="r-output" placeholder="예: 레시피 카드 (Canva 제작), 주문표 작성 결과물" style="min-height:50px;"></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">✅ 평가 및 다음 방향</div>
+    <div class="field">
+      <div class="pills" id="eval-pills">
+        <button class="pill" onclick="togglePill(this)">목표 도달</button>
+        <button class="pill" onclick="togglePill(this)">부분 도달</button>
+        <button class="pill" onclick="togglePill(this)">반복 연습 필요</button>
+        <button class="pill" onclick="togglePill(this)">다음 수업 확장 가능</button>
+        <button class="pill" onclick="togglePill(this)">학습 자료 수준 조정 필요</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>다음 학습 방향</label>
+      <textarea id="r-next" placeholder="예: 익숙한 재료 관련 어휘 확장, 선택지 수를 3개로 늘려 자발적 표현 기회 증가" style="min-height:70px;"></textarea>
+    </div>
+    <div class="field">
+      <label>추가 메모 <span class="sub">선택</span></label>
+      <textarea id="r-memo" placeholder="자유롭게 메모하세요." style="min-height:50px;"></textarea>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="saveRecord()">💾 기록 저장</button>
+  </div>
+</div>
+
+<!-- ===== TAB3: 기록 보기 ===== -->
+<div id="tab-view" class="panel">
+  <div class="card">
+    <div class="card-header">🔎 필터</div>
+    <div class="filter-bar">
+      <select id="fv-student" onchange="renderView()"><option value="">전체 학생</option></select>
+      <select id="fv-semester" onchange="renderView()"><option value="">전체 학기</option><option>1학기</option><option>2학기</option></select>
+    </div>
+    <div class="filter-bar">
+      <input type="date" id="fv-from" onchange="renderView()">
+      <input type="date" id="fv-to" onchange="renderView()">
+    </div>
+    <div class="filter-bar">
+      <select id="fv-area" onchange="renderView()"><option value="">전체 관찰영역</option></select>
+      <select id="fv-sup" onchange="renderView()">
+        <option value="">전체 지원수준</option>
+        <option>독립 수행</option><option>언어 촉진</option><option>시각 촉진</option><option>모델링</option><option>신체적 도움</option>
+      </select>
+    </div>
+  </div>
+  <div id="view-count" style="font-size:13px;color:var(--gray);margin-bottom:8px;padding:0 2px;"></div>
+  <div id="view-list"></div>
+</div>
+
+<!-- ===== TAB4: IEP 평가 ===== -->
+<div id="tab-iep" class="panel">
+  <div class="card">
+    <div class="card-header">📊 IEP 평가 자료 모아보기</div>
+    <div class="row2">
+      <div class="field"><label>학생 선택</label>
+        <select id="ip-student" onchange="renderIep()"><option value="">-- 선택 --</option></select>
+      </div>
+      <div class="field"><label>학기</label>
+        <select id="ip-semester" onchange="renderIep()"><option value="">전체</option><option>1학기</option><option>2학기</option></select>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>기간 시작</label><input type="date" id="ip-from" onchange="renderIep()"></div>
+      <div class="field"><label>기간 종료</label><input type="date" id="ip-to" onchange="renderIep()"></div>
+    </div>
+  </div>
+  <div id="iep-result"></div>
+  <div id="iep-summary-card" class="card" style="display:none;">
+    <div class="card-header">📝 기록 목록 텍스트 복사</div>
+    <div class="copy-box" id="iep-summary-text"></div>
+    <button class="btn btn-secondary btn-sm" style="margin-top:10px;" onclick="copyIepSummary()">📋 클립보드에 복사</button>
+  </div>
+  <div id="ai-summary-card" class="card" style="display:none;">
+    <div class="card-header">🤖 AI 누적 관찰 요약 생성</div>
+    <p style="font-size:12px;color:var(--gray);margin-bottom:12px;">누적된 관찰 기록을 IEP 평가 문장 스타일로 요약합니다.<br><span style="color:var(--red);">※ 학생 실명 포함 안 됨, 가명으로만 처리</span></p>
+    <div class="row2">
+      <div class="field"><label>요약 대상 영역</label>
+        <select id="ai-area"><option value="">전체 영역</option></select>
+      </div>
+      <div class="field"><label>연결할 IEP 목표</label>
+        <select id="ai-iep-goal"><option value="">전체 목표</option></select>
+      </div>
+    </div>
+    <button class="btn btn-ai btn-full" id="ai-gen-btn" onclick="generateAiSummary()">✨ AI 요약 생성하기</button>
+    <div id="ai-loading" style="display:none;text-align:center;padding:20px;color:var(--purple);">
+      <span class="ai-spinner"></span><span style="font-size:13px;margin-left:8px;">관찰 기록을 분석 중입니다…</span>
+    </div>
+    <div id="ai-result-area" style="display:none;margin-top:14px;">
+      <div style="font-size:13px;font-weight:bold;color:var(--green);margin-bottom:8px;">📄 생성된 요약문</div>
+      <div class="copy-box" id="ai-result-text" style="min-height:120px;line-height:1.9;"></div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+        <button class="btn btn-secondary btn-sm" onclick="copyAiResult()">📋 복사</button>
+        <button class="btn btn-ai btn-sm" onclick="generateAiSummary()">🔄 다시 생성</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== STATE =====
+const DEFAULT_AREAS=['참여','의사소통','정서·행동','도움 요청','과제 수행','사회성','일반화','문제해결'];
+let db={
+  students:JSON.parse(localStorage.getItem('obs4_students')||'[]'),
+  records:JSON.parse(localStorage.getItem('obs4_records')||'[]'),
+  customSubjects:JSON.parse(localStorage.getItem('obs4_customSubj')||'[]'),
+  areas:JSON.parse(localStorage.getItem('obs4_areas')||'null')||[...DEFAULT_AREAS]
+};
+let selectedSubj='';
+let pendingFiles=[]; // {name, type, dataUrl}
+
+function persist(){
+  localStorage.setItem('obs4_students',JSON.stringify(db.students));
+  localStorage.setItem('obs4_records',JSON.stringify(db.records));
+  localStorage.setItem('obs4_customSubj',JSON.stringify(db.customSubjects));
+  localStorage.setItem('obs4_areas',JSON.stringify(db.areas));
+}
+
+// ===== NAV =====
+function goTab(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='record')initRecord();
+  if(id==='view')initView();
+  if(id==='iep')initIep();
+  if(id==='students')renderStudents();
+}
+
+// ===== PILLS =====
+function togglePill(el){el.classList.toggle('on');}
+function togglePillSingle(el,gid){
+  document.querySelectorAll('#'+gid+' .pill').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');
+}
+function getOnPills(gid){
+  return[...document.querySelectorAll('#'+gid+' .pill.on')].map(p=>p.textContent.trim());
+}
+function clearPills(gid){
+  document.querySelectorAll('#'+gid+' .pill').forEach(p=>p.classList.remove('on'));
+}
+
+// ===== 교과 =====
+function selectSubj(el,name){
+  document.querySelectorAll('#subj-pills-basic .pill,#subj-pills-iad .pill,#subj-pills-custom .pill').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');
+  selectedSubj=name;
+  document.getElementById('selected-subj-display').textContent='선택된 교과: '+name;
+}
+function addCustomSubj(){
+  const val=document.getElementById('custom-subj-input').value.trim();
+  if(!val)return;
+  if(db.customSubjects.includes(val)){alert('이미 추가된 교과입니다.');return;}
+  db.customSubjects.push(val);persist();renderCustomSubjPills();
+  document.getElementById('custom-subj-input').value='';
+}
+function renderCustomSubjPills(){
+  const el=document.getElementById('subj-pills-custom');
+  if(!el)return;
+  el.innerHTML=db.customSubjects.map(s=>`<button class="pill" style="border-color:#a855f7;color:#7c3aed;" onclick="selectSubj(this,'[선택]${s}')">[선택] ${s}</button>`).join('');
+}
+
+// ===== 관찰 영역 =====
+function renderAreaPills(){
+  const el=document.getElementById('area-pills');
+  if(!el)return;
+  el.innerHTML=db.areas.map(a=>`
+    <span style="display:inline-flex;align-items:center;border-radius:20px;overflow:hidden;border:1.5px solid #d8b4fe;">
+      <button class="pill purple" style="border-radius:0;border:none;padding:8px 10px;" onclick="togglePill(this)">${a}</button>
+      <button onclick="removeArea('${a}')" style="background:white;border:none;cursor:pointer;padding:4px 7px;color:#9ca3af;font-size:12px;" title="삭제">✕</button>
+    </span>`).join('');
+  // IEP 탭 영역 필터 동기화
+  const aiAreaSel=document.getElementById('ai-area');
+  const fvAreaSel=document.getElementById('fv-area');
+  if(aiAreaSel){aiAreaSel.innerHTML='<option value="">전체 영역</option>'+db.areas.map(a=>`<option>${a}</option>`).join('');}
+  if(fvAreaSel){fvAreaSel.innerHTML='<option value="">전체 관찰영역</option>'+db.areas.map(a=>`<option>${a}</option>`).join('');}
+}
+function addArea(){
+  const val=document.getElementById('area-input').value.trim();
+  if(!val)return;
+  if(db.areas.includes(val)){alert('이미 있는 영역입니다.');return;}
+  db.areas.push(val);persist();renderAreaPills();
+  document.getElementById('area-input').value='';
+}
+function removeArea(name){
+  if(!confirm(`"${name}" 영역을 삭제할까요?`))return;
+  db.areas=db.areas.filter(a=>a!==name);persist();renderAreaPills();
+}
+
+// ===== 파일 업로드 =====
+function handleFiles(input){
+  const files=[...input.files];
+  if(pendingFiles.length+files.length>5){alert('최대 5개까지 첨부할 수 있습니다.');return;}
+  files.forEach(f=>{
+    if(!['image/jpeg','image/png','application/pdf'].includes(f.type)){alert(`${f.name}: 이미지(jpg,png) 또는 PDF만 가능합니다.`);return;}
+    const reader=new FileReader();
+    reader.onload=e=>{
+      pendingFiles.push({name:f.name,type:f.type,dataUrl:e.target.result});
+      renderFilePreviews();
+    };
+    reader.readAsDataURL(f);
+  });
+  input.value='';
+}
+function renderFilePreviews(){
+  const el=document.getElementById('file-preview-list');
+  if(!el)return;
+  el.innerHTML=pendingFiles.map((f,i)=>`
+    <div class="file-preview-item">
+      ${f.type.startsWith('image/')?
+        `<img src="${f.dataUrl}" alt="${f.name}" title="${f.name}">`:
+        `<div class="pdf-thumb"><span>📄</span>${f.name.slice(0,10)}${f.name.length>10?'…':''}</div>`}
+      <button class="del-btn" onclick="removeFile(${i})">✕</button>
+    </div>`).join('');
+}
+function removeFile(i){pendingFiles.splice(i,1);renderFilePreviews();}
+
+// 기록 카드에서 파일 미리보기 (저장된)
+function renderSavedFiles(files){
+  if(!files||!files.length)return'';
+  return`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">`+
+    files.map(f=>f.type.startsWith('image/')?
+      `<img src="${f.dataUrl}" style="width:72px;height:72px;object-fit:cover;border-radius:6px;border:1.5px solid var(--border);cursor:pointer;" onclick="openFile('${f.dataUrl}')" title="${f.name}">`:
+      `<div onclick="openFile('${f.dataUrl}')" style="width:72px;height:72px;border-radius:6px;border:1.5px solid var(--border);background:#f1f5f9;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:2px;font-size:10px;color:var(--gray);"><span style="font-size:22px;">📄</span>${f.name.slice(0,9)}…</div>`
+    ).join('')+'</div>';
+}
+function openFile(dataUrl){window.open(dataUrl,'_blank');}
+
+// ===== AI 강점·지원 분석 =====
+async function generateStrengthAi(){
+  const obs=document.getElementById('r-obs').value.trim();
+  if(!obs){alert('먼저 관찰 기록을 입력해 주세요.');return;}
+  const existStrength=document.getElementById('r-strength').value.trim();
+  const existSupport=document.getElementById('r-support-need').value.trim();
+  const mode=(existStrength||existSupport)?'refine':'generate';
+  const prompt=mode==='generate'?
+    `특수교육 현장의 고등학생 수업 관찰 기록입니다. "학생은" 또는 "이 학생은"으로만 주어를 쓰고 실명·가명을 쓰지 마세요.
+관찰 기록: ${obs}
+지원 수준: ${getOnPills('support-pills')[0]||'미기록'}
+관찰 영역: ${getOnPills('area-pills').join(', ')||'미선택'}
+
+아래 두 항목을 특수교육 문체로 간결하게 작성하세요. 각 항목은 1~2문장.
+JSON 형식으로만 출력: {"strength":"...","supportNeed":"..."}`:
+    `특수교육 현장 교사가 작성한 내용을 자연스럽게 다듬어 주세요.
+관찰 기록: ${obs}
+기존 강점: ${existStrength||'없음'}
+기존 지원 필요: ${existSupport||'없음'}
+특수교육 문체로 다듬어 주세요. "학생은"/"이 학생은"으로만 주어 표현.
+JSON 형식으로만 출력: {"strength":"...","supportNeed":"..."}`;
+
+  document.getElementById('ai-strength-loading').style.display='block';
+  document.getElementById('ai-strength-result').style.display='none';
+  document.getElementById('ai-strength-btn').disabled=true;
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:500,messages:[{role:'user',content:prompt}]})
+    });
+    const data=await resp.json();
+    const raw=data.content?.map(c=>c.text||'').join('')||'{}';
+    const clean=raw.replace(/```json|```/g,'').trim();
+    const parsed=JSON.parse(clean);
+    // 결과 표시
+    const resEl=document.getElementById('ai-strength-result');
+    resEl.innerHTML=`<div class="ai-box">
+      <div class="ai-box-header">🤖 AI 분석 결과 ${mode==='refine'?'(다듬기)':'(자동 생성)'}</div>
+      <div style="font-size:13px;margin-bottom:8px;"><b style="color:var(--green);">💪 강점</b><br>${parsed.strength||'—'}</div>
+      <div style="font-size:13px;margin-bottom:10px;"><b style="color:#b45309;">🙋 지원 필요</b><br>${parsed.supportNeed||'—'}</div>
+      <button class="btn btn-secondary btn-sm" onclick="applyStrengthAi('${encodeURIComponent(parsed.strength||'')}','${encodeURIComponent(parsed.supportNeed||'')}')">✅ 위 내용으로 적용하기</button>
+    </div>`;
+    resEl.style.display='block';
+  }catch(e){
+    alert('분석 중 오류가 발생했습니다.');
+  }finally{
+    document.getElementById('ai-strength-loading').style.display='none';
+    document.getElementById('ai-strength-btn').disabled=false;
+  }
+}
+function applyStrengthAi(s,n){
+  document.getElementById('r-strength').value=decodeURIComponent(s);
+  document.getElementById('r-support-need').value=decodeURIComponent(n);
+  document.getElementById('ai-strength-result').style.display='none';
+}
+
+// ===== STUDENTS =====
+function addCurrentLevelRow(){
+  const row=document.createElement('div');
+  row.className='current-level-entry';
+  row.style.cssText='display:grid;grid-template-columns:1fr 3fr auto;gap:6px;margin-bottom:6px;align-items:flex-start;';
+  row.innerHTML=`<input type="text" placeholder="교과/영역" style="font-size:12px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;">
+    <textarea placeholder="현재 수행 수준 기술" style="font-size:12px;padding:7px 9px;min-height:60px;border:1.5px solid var(--border);border-radius:8px;resize:vertical;font-family:inherit;"></textarea>
+    <button class="btn btn-danger btn-sm" style="margin-top:2px;" onclick="removeCurrentLevelRow(this)">✕</button>`;
+  document.getElementById('current-level-rows').appendChild(row);
+}
+function removeCurrentLevelRow(btn){
+  const rows=document.querySelectorAll('#current-level-rows .current-level-entry');
+  if(rows.length===1){btn.closest('.current-level-entry').querySelectorAll('input,textarea').forEach(i=>i.value='');return;}
+  btn.closest('.current-level-entry').remove();
+}
+function addIepRow(){
+  const row=document.createElement('div');row.className='iep-entry';
+  row.innerHTML=`<input type="text" placeholder="교과"><input type="text" placeholder="영역"><input type="text" placeholder="목표 내용"><button class="btn btn-danger btn-sm" onclick="removeIepRow(this)">✕</button>`;
+  document.getElementById('iep-rows').appendChild(row);
+}
+function removeIepRow(btn){
+  const rows=document.querySelectorAll('#iep-rows .iep-entry');
+  if(rows.length===1){btn.closest('.iep-entry').querySelectorAll('input').forEach(i=>i.value='');return;}
+  btn.closest('.iep-entry').remove();
+}
+function saveStudent(){
+  const name=document.getElementById('sn-name').value.trim();
+  if(!name){alert('가명을 입력해 주세요.');return;}
+  if(db.students.find(s=>s.name===name)){alert('이미 등록된 가명입니다.');return;}
+  const currentLevels=[];
+  document.querySelectorAll('#current-level-rows .current-level-entry').forEach(row=>{
+    const subj=row.querySelector('input').value.trim();
+    const desc=row.querySelector('textarea').value.trim();
+    if(desc)currentLevels.push({subj,desc});
+  });
+  const ieps=[];
+  document.querySelectorAll('#iep-rows .iep-entry').forEach(row=>{
+    const ins=row.querySelectorAll('input');
+    const subj=ins[0].value.trim(),domain=ins[1].value.trim(),goal=ins[2].value.trim();
+    if(goal)ieps.push({id:Date.now()+Math.random(),subj,domain,goal});
+  });
+  db.students.push({id:Date.now(),name,currentLevels,ieps});persist();
+  document.getElementById('sn-name').value='';
+  document.querySelectorAll('#iep-rows .iep-entry input').forEach(i=>i.value='');
+  while(document.querySelectorAll('#iep-rows .iep-entry').length>1)
+    document.querySelector('#iep-rows .iep-entry:last-child').remove();
+  renderStudents();
+}
+function renderStudents(){
+  const el=document.getElementById('student-list');
+  if(!db.students.length){el.innerHTML='<div class="empty"><div class="big">👤</div><p>등록된 학생이 없습니다.</p></div>';return;}
+  el.innerHTML=db.students.map((s,i)=>`
+    <div class="student-row">
+      <div class="student-avatar">${s.name.slice(-1)}</div>
+      <div class="student-info">
+        <div class="student-name">${s.name}</div>
+        <div class="iep-chips">${s.ieps.map(g=>`<span class="chip">${g.subj?g.subj+'·':''}${g.domain||''}</span>`).join('')}</div>
+        ${s.currentLevels?.length?`
+        <div style="margin-top:8px;padding:8px 10px;background:var(--green-light);border-radius:6px;">
+          <div style="font-size:11px;font-weight:bold;color:var(--green);margin-bottom:4px;">📋 현행수준</div>
+          ${s.currentLevels.map(c=>`<div style="font-size:12px;color:var(--text);margin-top:3px;"><b style="color:var(--green);">${c.subj||'영역'}</b> · ${c.desc}</div>`).join('')}
+        </div>`:''}
+        <div style="margin-top:6px;">${s.ieps.map((g,j)=>`<div style="font-size:12px;color:var(--text-sub);margin-top:3px;">${j+1}. [${g.subj||''}${g.domain?'·'+g.domain:''}] ${g.goal}</div>`).join('')}</div>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="deleteStudent(${i})">삭제</button>
+    </div>`).join('');
+}
+function deleteStudent(i){
+  if(!confirm('학생 정보를 삭제할까요?\n관련 기록은 유지됩니다.'))return;
+  db.students.splice(i,1);persist();renderStudents();
+}
+
+// ===== RECORD =====
+function initRecord(){
+  const today=new Date().toISOString().split('T')[0];
+  document.getElementById('r-date').value=today;
+  const m=new Date().getMonth()+1;
+  document.getElementById('r-semester').value=m<=7?'1학기':'2학기';
+  const pg=document.getElementById('student-pills');
+  pg.innerHTML=db.students.length
+    ?db.students.map(s=>`<button class="pill blue" onclick="togglePill(this);updateIepLink()">${s.name}</button>`).join('')
+    :'<span style="color:var(--gray);font-size:13px;">먼저 학생을 등록하세요.</span>';
+  selectedSubj='';
+  document.getElementById('selected-subj-display').textContent='선택된 교과: 없음';
+  document.querySelectorAll('#subj-pills-basic .pill,#subj-pills-iad .pill,#subj-pills-custom .pill').forEach(p=>p.classList.remove('on'));
+  renderCustomSubjPills();renderAreaPills();updateIepLink();
+  pendingFiles=[];renderFilePreviews();
+  document.getElementById('ai-strength-result').style.display='none';
+}
+function updateIepLink(){
+  const sel=getOnPills('student-pills');
+  const el=document.getElementById('iep-link-area');
+  if(!sel.length){el.innerHTML='<p style="color:var(--gray);font-size:13px;">위에서 학생을 선택하면 IEP 목표가 표시됩니다.</p>';return;}
+  let html='';
+  sel.forEach(name=>{
+    const s=db.students.find(st=>st.name===name);
+    if(!s||!s.ieps.length)return;
+    html+=`<div style="margin-bottom:10px;"><div style="font-weight:bold;font-size:13px;color:var(--green);margin-bottom:5px;">${name}</div>`;
+    html+=`<div class="pills">`+s.ieps.map((g,j)=>`<button class="pill purple" data-iep="${name}::${j}::${g.goal}" onclick="togglePill(this)">[${g.subj||''}${g.domain?'·'+g.domain:''}] ${g.goal}</button>`).join('')+'</div></div>';
+  });
+  el.innerHTML=html||'<p style="color:var(--gray);font-size:13px;">선택 학생에 IEP 목표가 없습니다.</p>';
+}
+function saveRecord(){
+  const date=document.getElementById('r-date').value;
+  const obs=document.getElementById('r-obs').value.trim();
+  const studs=getOnPills('student-pills');
+  if(!date||!obs||!studs.length){alert('날짜, 학생 선택, 관찰 기록은 필수입니다.');return;}
+  if(!selectedSubj){alert('교과 / 영역을 선택해 주세요.');return;}
+  const iepLinks=[...document.querySelectorAll('#iep-link-area .pill.on')].map(p=>p.dataset.iep||p.textContent.trim());
+  const rec={
+    id:Date.now(),date,
+    semester:document.getElementById('r-semester').value,
+    subj:selectedSubj,
+    lesson:document.getElementById('r-lesson').value.trim(),
+    students:studs,
+    areas:getOnPills('area-pills'),
+    obs,
+    support:getOnPills('support-pills')[0]||'',
+    iepLinks,
+    strength:document.getElementById('r-strength').value.trim(),
+    supportNeed:document.getElementById('r-support-need').value.trim(),
+    tools:getOnPills('tool-pills'),
+    toolCustom:document.getElementById('r-tool-custom').value.trim(),
+    toolData:document.getElementById('r-tool-data').value.trim(),
+    files:[...pendingFiles],
+    output:document.getElementById('r-output').value.trim(),
+    evals:getOnPills('eval-pills'),
+    next:document.getElementById('r-next').value.trim(),
+    memo:document.getElementById('r-memo').value.trim()
+  };
+  db.records.push(rec);persist();
+  ['r-obs','r-memo','r-lesson','r-tool-custom','r-tool-data','r-output','r-strength','r-support-need','r-next']
+    .forEach(id=>document.getElementById(id).value='');
+  ['student-pills','area-pills','support-pills','eval-pills','tool-pills'].forEach(clearPills);
+  selectedSubj='';
+  document.querySelectorAll('#subj-pills-basic .pill,#subj-pills-iad .pill,#subj-pills-custom .pill').forEach(p=>p.classList.remove('on'));
+  document.getElementById('selected-subj-display').textContent='선택된 교과: 없음';
+  pendingFiles=[];renderFilePreviews();
+  updateIepLink();
+  document.getElementById('ai-strength-result').style.display='none';
+  alert('✅ 기록이 저장되었습니다!');
+}
+
+// ===== VIEW =====
+function initView(){
+  const sel=document.getElementById('fv-student');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">전체 학생</option>'+db.students.map(s=>`<option ${s.name===cur?'selected':''} value="${s.name}">${s.name}</option>`).join('');
+  renderAreaPills();renderView();
+}
+function renderView(){
+  let recs=[...db.records];
+  const st=document.getElementById('fv-student').value;
+  const sm=document.getElementById('fv-semester').value;
+  const fr=document.getElementById('fv-from').value;
+  const to=document.getElementById('fv-to').value;
+  const ar=document.getElementById('fv-area').value;
+  const sp=document.getElementById('fv-sup').value;
+  if(st)recs=recs.filter(r=>r.students.includes(st));
+  if(sm)recs=recs.filter(r=>r.semester===sm);
+  if(fr)recs=recs.filter(r=>r.date>=fr);
+  if(to)recs=recs.filter(r=>r.date<=to);
+  if(ar)recs=recs.filter(r=>r.areas.includes(ar));
+  if(sp)recs=recs.filter(r=>r.support===sp);
+  recs.sort((a,b)=>b.date.localeCompare(a.date));
+  document.getElementById('view-count').textContent=`총 ${recs.length}건의 기록`;
+  const el=document.getElementById('view-list');
+  if(!recs.length){el.innerHTML='<div class="empty"><div class="big">📭</div><p>해당 조건의 기록이 없습니다.</p></div>';return;}
+  const sc=s=>s&&s.startsWith('[일상]')?'tag-subj-iad':'tag-subj';
+  el.innerHTML=recs.map(r=>`
+    <div class="rec-card">
+      <div class="rec-top">
+        <span class="tag tag-date">📅 ${r.date}</span>
+        <span class="tag ${sc(r.subj)}">📚 ${r.subj||''}</span>
+        ${r.semester?`<span class="tag" style="background:#f1f5f9;color:#475569;">📆 ${r.semester}</span>`:''}
+        ${r.lesson?`<span class="tag" style="background:#eff6ff;color:#1d4ed8;">🎯 ${r.lesson}</span>`:''}
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;">
+        ${r.students.map(s=>`<span class="tag" style="background:var(--blue);color:white;">👤 ${s}</span>`).join('')}
+        ${r.areas.map(a=>`<span class="tag tag-area">🔍 ${a}</span>`).join('')}
+      </div>
+      <div class="rec-obs">${r.obs}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;">
+        ${r.support?`<span class="tag tag-sup">🤝 ${r.support}</span>`:''}
+        ${r.evals.map(e=>`<span class="tag tag-eval">✔ ${e}</span>`).join('')}
+      </div>
+      ${r.iepLinks.length?`<div class="rec-iep">📌 IEP: ${r.iepLinks.map(l=>l.split('::')[2]||l).join(' / ')}</div>`:''}
+      ${r.strength?`<div class="rec-detail" style="color:#15803d;">💪 강점: ${r.strength}</div>`:''}
+      ${r.supportNeed?`<div class="rec-detail" style="color:#b45309;">🙋 지원 필요: ${r.supportNeed}</div>`:''}
+      ${(r.tools?.length||r.toolCustom)?`<div class="rec-detail" style="color:#0369a1;">🤖 도구: ${[...(r.tools||[]),r.toolCustom||''].filter(Boolean).join(', ')}</div>`:''}
+      ${r.toolData?`<div class="rec-detail" style="color:#0369a1;">📊 ${r.toolData}</div>`:''}
+      ${r.output?`<div class="rec-detail" style="color:#7c3aed;">📁 산출물: ${r.output}</div>`:''}
+      ${r.next?`<div class="rec-detail" style="color:#1d4ed8;">➡️ 다음 방향: ${r.next}</div>`:''}
+      ${renderSavedFiles(r.files)}
+      ${r.memo?`<div class="rec-memo">📝 ${r.memo}</div>`:''}
+      <div style="text-align:right;margin-top:8px;">
+        <button class="btn btn-danger btn-sm" onclick="deleteRecord(${r.id})">삭제</button>
+      </div>
+    </div>`).join('');
+}
+function deleteRecord(id){
+  if(!confirm('이 기록을 삭제할까요?'))return;
+  db.records=db.records.filter(r=>r.id!==id);persist();renderView();
+}
+
+// ===== IEP =====
+function initIep(){
+  const sel=document.getElementById('ip-student');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">-- 학생 선택 --</option>'+db.students.map(s=>`<option ${s.name===cur?'selected':''} value="${s.name}">${s.name}</option>`).join('');
+  renderAreaPills();renderIep();
+}
+function renderIep(){
+  const name=document.getElementById('ip-student').value;
+  const sm=document.getElementById('ip-semester').value;
+  const fr=document.getElementById('ip-from').value;
+  const to=document.getElementById('ip-to').value;
+  const res=document.getElementById('iep-result');
+  const sumCard=document.getElementById('iep-summary-card');
+  const aiCard=document.getElementById('ai-summary-card');
+  if(!name){res.innerHTML='';sumCard.style.display='none';aiCard.style.display='none';return;}
+  const s=db.students.find(st=>st.name===name);if(!s)return;
+  let recs=db.records.filter(r=>r.students.includes(name));
+  if(sm)recs=recs.filter(r=>r.semester===sm);
+  if(fr)recs=recs.filter(r=>r.date>=fr);
+  if(to)recs=recs.filter(r=>r.date<=to);
+  recs.sort((a,b)=>a.date.localeCompare(b.date));
+  if(!recs.length&&!s.ieps.length){res.innerHTML='<div class="empty"><div class="big">📭</div><p>기록이 없습니다.</p></div>';sumCard.style.display='none';aiCard.style.display='none';return;}
+  let html='',summaryLines=[`[${name}] IEP 평가 자료\n학기: ${sm||'전체'} / 기간: ${fr||'시작'}~${to||'현재'}\n${'─'.repeat(40)}\n`];
+  s.ieps.forEach((g,gi)=>{
+    const linked=recs.filter(r=>r.iepLinks.some(l=>l.includes(`::${gi}::`)||l.includes(g.goal)));
+    html+=`<div class="iep-goal-block">
+      <div class="iep-goal-title"><span>[${g.subj||''}${g.domain?'·'+g.domain:''}] ${g.goal}</span><span class="badge">${linked.length}건</span></div>
+      <div class="iep-goal-body">
+        ${linked.length?linked.map(r=>`<div class="iep-rec-item">
+          <span class="tag tag-date">${r.date}</span> <span class="tag tag-subj" style="margin-left:4px;">${r.subj||''}</span>
+          ${r.support?`<span class="tag tag-sup" style="margin-left:4px;">${r.support}</span>`:''}
+          <div style="margin-top:6px;font-size:13px;line-height:1.6;">${r.obs}</div>
+          ${r.strength?`<div style="font-size:12px;color:#15803d;margin-top:3px;">💪 ${r.strength}</div>`:''}
+          ${r.supportNeed?`<div style="font-size:12px;color:#b45309;margin-top:3px;">🙋 ${r.supportNeed}</div>`:''}
+          ${r.evals.length?`<div style="margin-top:4px;">${r.evals.map(e=>`<span class="tag tag-eval" style="font-size:11px;">${e}</span>`).join(' ')}</div>`:''}
+        </div>`).join(''):'<p style="font-size:13px;color:var(--gray);padding:6px 0;">이 목표와 연결된 기록이 없습니다.</p>'}
+      </div>
+    </div>`;
+    summaryLines.push(`▶ 목표 ${gi+1}: [${g.subj||''}${g.domain?'·'+g.domain:''}]\n${g.goal}`);
+    if(linked.length){
+      summaryLines.push(`  관련 기록 (${linked.length}건):`);
+      linked.forEach(r=>{
+        summaryLines.push(`  · ${r.date} (${r.subj||''}) — ${r.obs.slice(0,80)}${r.obs.length>80?'…':''}`);
+        if(r.support)summaryLines.push(`    지원: ${r.support}`);
+        if(r.strength)summaryLines.push(`    강점: ${r.strength}`);
+        if(r.supportNeed)summaryLines.push(`    지원필요: ${r.supportNeed}`);
+        if(r.evals.length)summaryLines.push(`    평가: ${r.evals.join(', ')}`);
+      });
+    }else summaryLines.push('  관련 기록 없음.');
+    summaryLines.push('');
+  });
+  const unlinked=recs.filter(r=>!r.iepLinks.length);
+  if(unlinked.length){
+    html+=`<div class="iep-goal-block">
+      <div class="iep-goal-title" style="background:var(--gray);"><span>IEP 목표 미연결 관찰 기록</span><span class="badge">${unlinked.length}건</span></div>
+      <div class="iep-goal-body">${unlinked.map(r=>`<div class="iep-rec-item"><span class="tag tag-date">${r.date}</span> <span class="tag tag-subj">${r.subj||''}</span><div style="margin-top:5px;font-size:13px;">${r.obs}</div></div>`).join('')}</div>
+    </div>`;
+  }
+  res.innerHTML=html;
+  document.getElementById('iep-summary-text').textContent=summaryLines.join('\n');
+  sumCard.style.display='block';aiCard.style.display='block';
+  document.getElementById('ai-result-area').style.display='none';
+  updateAiIepGoals();
+}
+function copyIepSummary(){navigator.clipboard.writeText(document.getElementById('iep-summary-text').textContent).then(()=>alert('📋 복사되었습니다!'));}
+
+// ===== AI SUMMARY =====
+function updateAiIepGoals(){
+  const name=document.getElementById('ip-student').value;
+  const sel=document.getElementById('ai-iep-goal');
+  sel.innerHTML='<option value="">전체 목표</option>';
+  if(!name)return;
+  const s=db.students.find(st=>st.name===name);if(!s)return;
+  s.ieps.forEach((g,i)=>{const opt=document.createElement('option');opt.value=i;opt.textContent=`[${g.subj||''}${g.domain?'·'+g.domain:''}] ${g.goal}`;sel.appendChild(opt);});
+}
+async function generateAiSummary(){
+  const name=document.getElementById('ip-student').value;
+  if(!name){alert('학생을 먼저 선택해 주세요.');return;}
+  const sm=document.getElementById('ip-semester').value;
+  const fr=document.getElementById('ip-from').value;
+  const to=document.getElementById('ip-to').value;
+  const areaFilter=document.getElementById('ai-area').value;
+  const iepIdx=document.getElementById('ai-iep-goal').value;
+  let recs=db.records.filter(r=>r.students.includes(name));
+  if(sm)recs=recs.filter(r=>r.semester===sm);
+  if(fr)recs=recs.filter(r=>r.date>=fr);
+  if(to)recs=recs.filter(r=>r.date<=to);
+  if(areaFilter)recs=recs.filter(r=>r.areas.includes(areaFilter));
+  if(iepIdx!==''){const s=db.students.find(st=>st.name===name);const goal=s?.ieps[iepIdx]?.goal;if(goal)recs=recs.filter(r=>r.iepLinks.some(l=>l.includes(goal)));}
+  if(!recs.length){alert('해당 조건의 관찰 기록이 없습니다.');return;}
+  const s=db.students.find(st=>st.name===name);
+  const iepText=s?.ieps.map((g,i)=>`목표${i+1}. [${g.subj||''}${g.domain?'·'+g.domain:''}] ${g.goal}`).join('\n')||'없음';
+  const recText=recs.slice(0,30).map(r=>`[${r.date}] ${r.subj||''}${r.lesson?' - '+r.lesson:''}\n관찰: ${r.obs}\n지원: ${r.support||'미기록'}${r.strength?'\n강점: '+r.strength:''}${r.supportNeed?'\n지원필요: '+r.supportNeed:''}${r.evals.length?'\n평가: '+r.evals.join(', '):''}${r.areas.length?'\n영역: '+r.areas.join(', '):''}`).join('\n\n');
+  const period=fr||to?`${fr||'학기 시작'}~${to||'현재'}`:(sm||'전 기간');
+  const prompt=`당신은 특수교육 현장 경험이 풍부한 특수교사입니다. 아래는 특수학교 고등학생의 수업 관찰 기록입니다. "학생은" 또는 "이 학생은"으로만 주어를 표현하고 실명이나 가명을 절대 쓰지 마세요.
+
+[IEP 목표]\n${iepText}\n[평가 기간] ${period}${areaFilter?'\n[필터 영역] '+areaFilter:''}\n\n[관찰 기록 (${recs.length}건)]\n${recText}\n\n위 관찰 기록을 바탕으로 IEP 학기 평가 문장 스타일로 누적 관찰 요약문을 작성해 주세요.
+1. 특수교육 현장 문체로 자연스럽게 작성
+2. 관찰된 행동, 지원 수준 변화, 향상된 점, 보완 필요 점을 균형 있게 포함
+3. 3~5문장 분량
+4. IEP 목표 달성 정도 자연스럽게 서술
+5. 요약문 본문만 출력`;
+  document.getElementById('ai-loading').style.display='flex';
+  document.getElementById('ai-result-area').style.display='none';
+  document.getElementById('ai-gen-btn').disabled=true;
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const data=await resp.json();
+    const text=data.content?.map(c=>c.text||'').join('')||'요약 생성에 실패했습니다.';
+    document.getElementById('ai-result-text').textContent=text;
+    document.getElementById('ai-result-area').style.display='block';
+  }catch(e){alert('요약 생성 중 오류가 발생했습니다.');}
+  finally{document.getElementById('ai-loading').style.display='none';document.getElementById('ai-gen-btn').disabled=false;}
+}
+function copyAiResult(){navigator.clipboard.writeText(document.getElementById('ai-result-text').textContent).then(()=>alert('📋 복사되었습니다!'));}
+
+// ===== INIT =====
+renderStudents();renderCustomSubjPills();renderAreaPills();
+</script>
+</body>
+</html>
